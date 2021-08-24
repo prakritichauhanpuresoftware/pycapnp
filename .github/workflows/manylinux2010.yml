@@ -3,50 +3,13 @@ name: manylinux2010
 on: [push, pull_request]
 
 jobs:
-  manylinux2010:
-
-    runs-on: ubuntu-latest
-    container: ${{ matrix.container-image }}
-    strategy:
-      matrix:
-          python-version: ['cp37-cp37m', 'cp38-cp38', 'cp39-cp39']
-          container-image: ['quay.io/pypa/manylinux2010_x86_64']
-
-    steps:
-    # NOTE: Cannot use checkout@v2 as it requires a newer version glibc, but that's not possible with manylinux without a secondary sysroot
-    - uses: actions/checkout@v1
-    # capnproto build requires cmake 3+, CentOS 6 (manylinux2010) defaults to cmake 2.8
-    
-    - name: Install dependencies
-      run: |
-        yum install -y cmake3 ninja-build
-        ln -sf /usr/bin/cmake3 /usr/local/bin/cmake
-        ln -s /usr/bin/ninja-build /usr/local/bin/ninja
-        /opt/python/${{ matrix.python-version }}/bin/python -m pip install -r requirements.txt
-        /opt/python/${{ matrix.python-version }}/bin/python -m pip install auditwheel
-    - name: Build pycapnp and install
-      env:
-        LDFLAGS: -Wl,--no-as-needed -lrt
-      run: |
-        /opt/python/${{ matrix.python-version }}/bin/python setup.py build
-        
-    - name: Packaging
-      run: |
-        /opt/python/${{ matrix.python-version }}/bin/python setup.py bdist_wheel
-        /opt/python/${{ matrix.python-version }}/bin/python setup.py sdist
-        /opt/python/${{ matrix.python-version }}/bin/auditwheel repair dist/*linux_*.whl
-    - uses: actions/upload-artifact@v1.0.0
-      with:
-        name: manylinux2010_dist
-        path: wheelhouse
-
   manylinux2014:
 
       runs-on: ubuntu-latest
       container: ${{ matrix.container-image }}
       strategy:
             matrix:
-              python-version: ['cp37-cp37m', 'cp38-cp38', 'cp39-cp39']
+              python-version: ['cp37-cp37m']
               arch: [aarch64]
       
       env:
@@ -72,6 +35,7 @@ jobs:
           tar -xvf cmake-3.20.5-linux-aarch64.tar.gz && \
           wget https://github.com/ninja-build/ninja/archive/v1.7.2.tar.gz && \
           tar -xvf v1.7.2.tar.gz && \
+          file cmake-3.20.5-linux-aarch64/bin/cmake && \
           ln -sf cmake-3.20.5-linux-aarch64/bin/cmake /usr/local/bin/cmake && \
           ln -s /usr/bin/ninja-1.7.2 /usr/local/bin/ninja && \
           /opt/python/${{ matrix.python-version }}/bin/python -m pip install -r requirements.txt && \
