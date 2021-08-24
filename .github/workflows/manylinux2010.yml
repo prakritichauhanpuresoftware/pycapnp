@@ -31,10 +31,11 @@ jobs:
           source .env/bin/activate && \
           yum update && \
           yum install -y wget && \
-          wget https://github.com/Kitware/CMake/releases/download/v3.20.5/cmake-3.20.5-linux-aarch64.tar.gz && \
-          tar -xvf cmake-3.20.5-linux-aarch64.tar.gz && \
-          wget https://github.com/ninja-build/ninja/archive/v1.7.2.tar.gz && \
-          tar -xvf v1.7.2.tar.gz && \
+          wget -q https://github.com/Kitware/CMake/releases/download/v3.20.5/cmake-3.20.5-linux-aarch64.tar.gz && \
+          tar -xf cmake-3.20.5-linux-aarch64.tar.gz && \
+          wget -q https://github.com/ninja-build/ninja/archive/v1.7.2.tar.gz && \
+          tar -xf v1.7.2.tar.gz && \
+          cmake --version && \
           file cmake-3.20.5-linux-aarch64/bin/cmake && \
           mv cmake-3.20.5-linux-aarch64/bin/cmake /usr/bin/cmake3 && \
           ln -s /usr/bin/cmake3 /usr/local/bin/cmake && \
