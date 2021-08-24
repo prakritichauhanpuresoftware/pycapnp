@@ -37,7 +37,7 @@ jobs:
           tar -xf v1.7.2.tar.gz && \
           cmake --version && \
           file cmake-3.20.5-linux-aarch64/bin/cmake && \
-          cp cmake-3.20.5-linux-aarch64/ /usr/bin/cmake3 && \
+          cp -r cmake-3.20.5-linux-aarch64/ /usr/bin/cmake3 && \
           #ln -s /usr/bin/cmake3 /usr/local/bin/cmake && \
           #cp cmake-3.20.5-linux-aarch64/bin/cmake /usr/local/bin/ && \
           cmake --version && \
