@@ -36,7 +36,9 @@ jobs:
           wget https://github.com/ninja-build/ninja/archive/v1.7.2.tar.gz && \
           tar -xvf v1.7.2.tar.gz && \
           file cmake-3.20.5-linux-aarch64/bin/cmake && \
-          cp cmake-3.20.5-linux-aarch64/bin/cmake /usr/local/bin/cmake && \
+          mv cmake-3.20.5-linux-aarch64/bin/cmake /usr/bin/cmake3 && \
+          ln -s /usr/bin/cmake3 /usr/local/bin/cmake && \
+          #cp cmake-3.20.5-linux-aarch64/bin/cmake /usr/local/bin/ && \
           cmake --version && \
           ln -s /usr/bin/ninja-1.7.2 /usr/local/bin/ninja && \
           /opt/python/${{ matrix.python-version }}/bin/python -m pip install -r requirements.txt && \
